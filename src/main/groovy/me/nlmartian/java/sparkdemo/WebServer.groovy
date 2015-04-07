@@ -1,5 +1,7 @@
 package me.nlmartian.java.sparkdemo
 
+import org.apache.commons.validator.routines.UrlValidator
+import redis.clients.util.Hashing
 import spark.Request
 import spark.Response
 
@@ -51,6 +53,30 @@ class WebServer extends SparkGroovy {
         get '/format', { req, res ->
             req.attribute "name", "This is a cool name"
         }, jsonClosure, xmlClosure
+
+        get '/link/:id', { Request req, Response res ->
+            def id = req.params 'id'
+            def url = RedisClient.getString(id)
+            if (url == null) {
+                res.status 404
+                return ''
+            } else {
+                res.redirect(url)
+            }
+        }
+
+        post '/link', { Request req, Response res ->
+            def url = req.queryParams('url');
+            def urlValidator = new UrlValidator(["http", "https"] as String[])
+            if (urlValidator.isValid(url)) {
+                def id = Math.abs(Hashing.MURMUR_HASH.hash(url)).toString()
+                RedisClient.putString(id, url)
+                return "http://localhost:4567/link/${id}"
+            } else {
+                res.status(400)
+                return ''
+            }
+        }
     }
 
 }

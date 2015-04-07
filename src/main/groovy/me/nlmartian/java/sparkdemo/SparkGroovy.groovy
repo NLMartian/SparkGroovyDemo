@@ -51,6 +51,10 @@ class SparkGroovy {
         spark.Spark.get path, createClosureBasedRouteForPath(path, closures)
     }
 
+    def post(String path, Closure... closures) {
+        spark.Spark.post(path, createClosureBasedRouteForPath(path, closures))
+    }
+
     def hello() {
         println "Hello"
     }
