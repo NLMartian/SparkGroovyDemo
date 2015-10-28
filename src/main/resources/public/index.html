@@ -6,5 +6,18 @@
 </head>
 <body>
     Spark Demo by martian
+
+    <script type="text/javascript">
+      var ws = new WebSocket("ws://0.0.0.0:4567/echo")
+
+      ws.onopen = function(event) {
+        console.log("socket has been opened!")
+        ws.send("hello world")
+      }
+
+      ws.onmessage = function(event) {
+        console.log(event.data)
+      }
+    </script>
 </body>
 </html>

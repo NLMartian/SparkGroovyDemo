@@ -38,6 +38,10 @@ class SparkGroovy {
         })
     }
 
+    def websocket(String path, Class<?> handler) {
+        spark.Spark.webSocket(path, handler)
+    }
+
     def json(Object obj) {
         return new JsonBuilder(obj)
     }
@@ -58,4 +62,6 @@ class SparkGroovy {
     def hello() {
         println "Hello"
     }
+
+
 }

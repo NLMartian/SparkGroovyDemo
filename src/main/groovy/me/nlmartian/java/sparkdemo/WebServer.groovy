@@ -27,8 +27,9 @@ class WebServer extends SparkGroovy {
 
     public void init() {
 
-        spark.Spark.staticFileLocation '/public'
+        websocket '/echo', EchoWsHandler.class
 
+        spark.Spark.staticFileLocation '/public'
 
         before { req, res ->
             // check
@@ -77,6 +78,8 @@ class WebServer extends SparkGroovy {
                 return ''
             }
         }
+
+
     }
 
 }
